@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/go-twitter/bd"
 	"github.com/go-twitter/models"
 )
 
@@ -25,7 +26,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, found, _ := bd.ExistUser(user.Email)
-	if found == true {
+	if found {
 		http.Error(w, "Ya existe un usuario registrado con ese email", 400)
 		return
 	}
@@ -36,7 +37,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if status == false {
+	if !status {
 		http.Error(w, "No se ha logrado insertar el registro del usuario", 400)
 		return
 	}

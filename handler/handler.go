@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/go-twitter/middlew"
+	"github.com/go-twitter/routers"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 )
