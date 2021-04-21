@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/go-twitter/bd"
+	"github.com/go-twitter/jwtoken"
 	"github.com/go-twitter/models"
 )
 
@@ -27,7 +27,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Usuario o contraseña invalidos ", 400)
 		return
 	}
-	jwtKey, err := jwt.GenerateToken(document)
+	jwtKey, err := jwtoken.GenerateToken(document)
 	if err != nil {
 		http.Error(w, "Ocurrió un error al generar el token "+err.Error(), 400)
 		return

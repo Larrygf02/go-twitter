@@ -14,6 +14,7 @@ import (
 func HandlerRouters() {
 	router := mux.NewRouter()
 	router.HandleFunc("/register", middlew.CheckBD(routers.Register)).Methods("POST")
+	router.HandleFunc("/login", middlew.CheckBD(routers.Login)).Methods("POST")
 	PORT := os.Getenv("PORT")
 	if PORT == "" {
 		PORT = "8081"
