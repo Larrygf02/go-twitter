@@ -33,7 +33,7 @@ func ProcessToken(token string) (*models.Claim, bool, string, error) {
 	}
 
 	if !tkn.Valid {
-		return claims, false, string(""), errors.New("Token invalido")
+		return claims, false, string(""), errors.New("token invalido")
 	}
 	return claims, false, string(""), err
 }
