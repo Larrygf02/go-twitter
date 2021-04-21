@@ -1,6 +1,10 @@
 package middlew
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/go-twitter/routers"
+)
 
 func ValidateJWT(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
