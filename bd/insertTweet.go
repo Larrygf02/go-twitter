@@ -14,7 +14,7 @@ func InsertTweet(tweet models.Tweet) (string, bool, error) {
 	defer cancel()
 
 	db := MongoCN.Database("twitter")
-	collection := db.Collection("usuarios")
+	collection := db.Collection("tweet")
 	register := bson.M{
 		"userid":  tweet.UserId,
 		"message": tweet.Message,
