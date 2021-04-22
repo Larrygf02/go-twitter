@@ -8,7 +8,7 @@ import (
 	"github.com/go-twitter/models"
 )
 
-func editProfile(w http.ResponseWriter, r *http.Request) {
+func EditProfile(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 
 	err := json.NewDecoder(r.Body).Decode(&user)
