@@ -1,4 +1,4 @@
-package router
+package routers
 
 import (
 	"encoding/json"
@@ -18,7 +18,7 @@ func ViewProfile(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Ocurrio un error al intentar el buscar el registro "+err.Error(), http.StatusBadRequest)
 		return
 	}
-	w.Header().Set("context-type", "application/json")
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(profile)
 }
