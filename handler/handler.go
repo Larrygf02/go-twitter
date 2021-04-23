@@ -20,6 +20,11 @@ func HandlerRouters() {
 	router.HandleFunc("/tweet", middlew.CheckBD(middlew.ValidateJWT(routers.RegisterTweet))).Methods("POST")
 	router.HandleFunc("/tweet", middlew.CheckBD(middlew.ValidateJWT(routers.DeleteTweet))).Methods("DELETE")
 	router.HandleFunc("/tweets", middlew.CheckBD(middlew.ValidateJWT(routers.GetTweets))).Methods("GET")
+	router.HandleFunc("/upload-avatar", middlew.CheckBD(middlew.ValidateJWT(routers.UploadAvatar))).Methods("POST")
+	router.HandleFunc("/avatar", middlew.CheckBD(routers.GetAvatar)).Methods("GET") // no es necesario token
+	router.HandleFunc("/upload-banner", middlew.CheckBD(middlew.ValidateJWT(routers.UploadBanner))).Methods("POST")
+	router.HandleFunc("/banner", middlew.CheckBD(routers.GetBanner)).Methods("GET") // no es necesario token
+
 	PORT := os.Getenv("PORT")
 	if PORT == "" {
 		PORT = "8081"
