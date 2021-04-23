@@ -24,7 +24,7 @@ func HandlerRouters() {
 	router.HandleFunc("/avatar", middlew.CheckBD(routers.GetAvatar)).Methods("GET") // no es necesario token
 	router.HandleFunc("/upload-banner", middlew.CheckBD(middlew.ValidateJWT(routers.UploadBanner))).Methods("POST")
 	router.HandleFunc("/banner", middlew.CheckBD(routers.GetBanner)).Methods("GET") // no es necesario token
-
+	router.HandleFunc("/relation", middlew.CheckBD(middlew.ValidateJWT(routers.InsertRelation))).Methods("POST")
 	PORT := os.Getenv("PORT")
 	if PORT == "" {
 		PORT = "8081"

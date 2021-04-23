@@ -27,4 +27,6 @@ func InsertRelation(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "No se ha logrado insertar la relacion", http.StatusBadRequest)
 		return
 	}
+	w.WriteHeader(http.StatusOK)
+
 }
