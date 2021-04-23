@@ -10,10 +10,10 @@ import (
 	"github.com/go-twitter/models"
 )
 
-func UploadAvatar(w http.ResponseWriter, r *http.Request) {
-	file, handler, err := r.FormFile("avatar")
+func UploadBanner(w http.ResponseWriter, r *http.Request) {
+	file, handler, _ := r.FormFile("banner")
 	var extension = strings.Split(handler.Filename, ".")[1]
-	var filelocation string = "uploads/avatars/" + IdUser + "." + extension
+	var filelocation string = "uploads/banners/" + IdUser + "." + extension
 	f, err := os.OpenFile(filelocation, os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {
 		http.Error(w, "Error al subir la imagen!"+err.Error(), http.StatusBadRequest)
@@ -26,10 +26,10 @@ func UploadAvatar(w http.ResponseWriter, r *http.Request) {
 	}
 	var user models.User
 	var status bool
-	user.Avatar = IdUser + "." + extension
+	user.Banner = IdUser + "." + extension
 	status, err = bd.EditUser(user, IdUser)
 	if err != nil || !status {
-		http.Error(w, "Error al grabar el avatar en el user", http.StatusBadRequest)
+		http.Error(w, "Error al grabar el banner en el user", http.StatusBadRequest)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
