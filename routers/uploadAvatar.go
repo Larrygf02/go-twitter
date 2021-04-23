@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -27,6 +28,7 @@ func UploadAvatar(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 	var status bool
 	user.Avatar = IdUser + "." + extension
+	fmt.Println(IdUser + "." + extension)
 	status, err = bd.EditUser(user, IdUser)
 	if err != nil || !status {
 		http.Error(w, "Error al grabar el avatar en el user", http.StatusBadRequest)

@@ -42,6 +42,10 @@ func EditUser(user models.User, ID string) (bool, error) {
 		register["website"] = user.Website
 	}
 
+	if len(user.Avatar) > 0 {
+		register["avatar"] = user.Avatar
+	}
+
 	updateQuery := bson.M{
 		"$set": register,
 	}
