@@ -28,6 +28,7 @@ func HandlerRouters() {
 	router.HandleFunc("/relation", middlew.CheckBD(middlew.ValidateJWT(routers.DeleteRelation))).Methods("DELETE")
 	router.HandleFunc("/relation", middlew.CheckBD(middlew.ValidateJWT(routers.ExistRelation))).Methods("GET")
 	router.HandleFunc("/list-user", middlew.CheckBD(middlew.ValidateJWT(routers.ViewUsers))).Methods("GET")
+	router.HandleFunc("/list-tweets", middlew.CheckBD(middlew.ValidateJWT(routers.ReadTweetsFollowers))).Methods("GET")
 	PORT := os.Getenv("PORT")
 	if PORT == "" {
 		PORT = "8081"
