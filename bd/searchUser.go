@@ -44,7 +44,7 @@ func SearchUser(ID string, page int64, search string, type_user string) ([]*mode
 		relation.UserRelation = filterUser.ID.Hex()
 
 		include = false
-		found, err = ExistRelation(relation)
+		found, _ = ExistRelation(relation)
 		// usuarios a los que no sigo
 		if type_user == "new" && !found {
 			include = true
