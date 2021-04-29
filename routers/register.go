@@ -41,5 +41,10 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "No se ha logrado insertar el registro del usuario", 400)
 		return
 	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
+
+	var response models.ResponseRelation
+	response.Status = true
+	json.NewEncoder(w).Encode(response)
 }
