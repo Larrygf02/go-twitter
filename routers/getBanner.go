@@ -20,13 +20,13 @@ func GetBanner(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Usuario no encontrado", http.StatusBadRequest)
 		return
 	}
-	openFile, err := os.Open("uploads/banners/" + profile.Avatar)
+	openFile, err := os.Open("uploads/banners/" + profile.Banner)
 	if err != nil {
 		http.Error(w, "Imagen no encontrada", http.StatusBadRequest)
 		return
 	}
 	_, err = io.Copy(w, openFile)
 	if err != nil {
-		http.Error(w, "Imagen al copiar", http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 }
