@@ -27,6 +27,6 @@ func GetAvatar(w http.ResponseWriter, r *http.Request) {
 	}
 	_, err = io.Copy(w, openFile)
 	if err != nil {
-		http.Error(w, "Imagen al copiar", http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 }
