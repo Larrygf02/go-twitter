@@ -17,7 +17,7 @@ func UploadAvatar(w http.ResponseWriter, r *http.Request) {
 	var filelocation string = "uploads/avatars/" + IdUser + "." + extension
 	f, err := os.OpenFile(filelocation, os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {
-		http.Error(w, "Error al subir la imagen!"+err.Error(), http.StatusBadRequest)
+		http.Error(w, "Error al subir la imagen! "+err.Error(), http.StatusBadRequest)
 		return
 	}
 	_, err = io.Copy(f, file)
