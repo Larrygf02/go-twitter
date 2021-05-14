@@ -2,7 +2,9 @@ package models
 
 import (
 	"fmt"
+	"log"
 	"mime/multipart"
+	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -37,7 +39,6 @@ func (t *S3Client) Upload(file multipart.File, myBucket string, keyName string) 
 	uploader := s3manager.NewUploader(t.Session)
 	result, err := uploader.Upload(&s3manager.UploadInput{
 		Bucket: aws.String(myBucket),
-		ACL:    aws.String("public-read"),
 		Key:    aws.String(keyName),
 		Body:   file,
 	})
@@ -47,4 +48,17 @@ func (t *S3Client) Upload(file multipart.File, myBucket string, keyName string) 
 	}
 	fmt.Println(result)
 	return true, nil
+}
+
+func (t *S3Client) GenerateUrl(myBucket string, keyName string) string {
+	req, _ := t.Svc.GetObjectRequest(&s3.GetObjectInput{
+		Bucket: aws.String(myBucket),
+		Key:    aws.String(keyName),
+	})
+	urlStr, err := req.Presign(15 * time.Minute)
+	if err != nil {
+		log.Println("Failed to sign request", err)
+	}
+	fmt.Println(urlStr)
+	return urlStr
 }
