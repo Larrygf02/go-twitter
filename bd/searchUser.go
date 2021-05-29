@@ -29,14 +29,16 @@ func SearchUser(ID string, page int64, search string, type_user string) ([]*mode
 	cursor, err := collection.Find(ctx, query, findOptions)
 	if err != nil {
 		fmt.Println(err.Error())
+		fmt.Println("Error 1")
 		return results, false
 	}
 	var found, include bool
 	for cursor.Next(ctx) {
 		var filterUser models.User
-		err := cursor.Decode(filterUser)
+		err := cursor.Decode(&filterUser)
 		if err != nil {
 			fmt.Println(err.Error())
+			fmt.Println("Error 2")
 			return results, false
 		}
 		var relation models.Relation
