@@ -69,7 +69,7 @@ func GetFollowers(ID string) ([]*models.User, bool) {
 			fmt.Println(err.Error())
 			return results, false
 		}
-		objectId, _ := primitive.ObjectIDFromHex(relation.UserRelation)
+		objectId, _ := primitive.ObjectIDFromHex(relation.UserId)
 		idUsers = append(idUsers, objectId)
 	}
 	collection = db.Collection("usuarios")
