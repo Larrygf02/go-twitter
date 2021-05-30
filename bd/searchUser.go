@@ -38,7 +38,6 @@ func SearchUser(ID string, page int64, search string, type_user string) ([]*mode
 		err := cursor.Decode(&filterUser)
 		if err != nil {
 			fmt.Println(err.Error())
-			fmt.Println("Error 2")
 			return results, false
 		}
 		var relation models.Relation
