@@ -7,6 +7,7 @@ import (
 
 	"github.com/go-twitter/models"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func GetFollowing(ID string) ([]*models.User, bool) {
@@ -16,7 +17,7 @@ func GetFollowing(ID string) ([]*models.User, bool) {
 	db := MongoCN.Database("twitter")
 	collection := db.Collection("relacion")
 	condition := bson.M{"userid": ID}
-	idUsers := make([]string, 1)
+	idUsers := make([]primitive.ObjectID, 0)
 	var results []*models.User
 
 	cursor, err := collection.Find(ctx, condition)
@@ -32,7 +33,14 @@ func GetFollowing(ID string) ([]*models.User, bool) {
 			fmt.Println(err.Error())
 			return results, false
 		}
-		idUsers = append(idUsers, relation.UserRelation)
+		objectId, _ := primitive.ObjectIDFromHex(relation.UserRelation)
+		idUsers = append(idUsers, objectId)
+	}
+	collection = db.Collection("usuarios")
+	cursor, _ = collection.Find(ctx, bson.M{"_id": bson.M{"$in": idUsers}})
+	if err = cursor.All(ctx, &results); err != nil {
+		fmt.Println(err.Error())
+		return results, false
 	}
 	fmt.Println(idUsers)
 	return results, true
