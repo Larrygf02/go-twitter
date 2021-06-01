@@ -42,9 +42,9 @@ func InsertCommentTweet(tweet models.Tweet) (string, bool, error) {
 		"userid":          tweet.UserId,
 		"message":         tweet.Message,
 		"date":            tweet.CreatedDate,
-		"is_comment":      tweet.IsComment,      // si el tweeter es un comentario
-		"twitter_comment": tweet.TwitterComment, // id de tweeter que esta comentando
-		"is_retweet":      tweet.IsRetweet,      // si el tweeter es un retweet
+		"is_comment":      tweet.IsComment,
+		"twitter_comment": tweet.TwitterComment,
+		"is_retweet":      tweet.IsRetweet,
 		"twitter_retweet": tweet.TwitterRetweet,
 	}
 

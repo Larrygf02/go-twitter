@@ -22,10 +22,10 @@ func RegisterCommentTweet(w http.ResponseWriter, r *http.Request) {
 		UserId:         IdUser,
 		Message:        tweet.Message,
 		CreatedDate:    time.Now(),
-		IsComment:      tweet.IsComment,
+		IsComment:      true,
 		TwitterComment: tweet.TwitterComment,
-		IsRetweet:      tweet.IsRetweet,
-		TwitterRetweet: tweet.TwitterRetweet,
+		IsRetweet:      false,
+		TwitterRetweet: string(""),
 	}
 
 	_, status, err := bd.InsertCommentTweet(register)
@@ -39,4 +39,22 @@ func RegisterCommentTweet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusCreated)
+}
+
+func GetCommentsTweet(w http.ResponseWriter, r *http.Request) {
+	ID := r.URL.Query().Get("id")
+	if len(ID) < 1 {
+		http.Error(w, "Debe enviar el parametro id", http.StatusBadRequest)
+		return
+	}
+	response, error := bd.GetCommentsTweet(ID)
+	if error != nil {
+		http.Error(w, "Error al leer los comentarios del tweet", http.StatusBadRequest)
+		return
+	}
+
+	w.Header().Set("Content-type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(response)
+
 }
