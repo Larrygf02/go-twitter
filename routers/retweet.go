@@ -9,7 +9,7 @@ import (
 	"github.com/go-twitter/models"
 )
 
-func RegisterRetweet(w http.ResponseWriter, r *http.Request) {
+func RegisterQuoteTweet(w http.ResponseWriter, r *http.Request) {
 	var tweet models.GetTweet
 	err := json.NewDecoder(r.Body).Decode(&tweet)
 
@@ -20,7 +20,7 @@ func RegisterRetweet(w http.ResponseWriter, r *http.Request) {
 
 	register := models.Tweet{
 		UserId:         IdUser,
-		Message:        string(""),
+		Message:        tweet.Message,
 		CreatedDate:    time.Now(),
 		IsComment:      false,
 		TwitterComment: "",
@@ -30,7 +30,7 @@ func RegisterRetweet(w http.ResponseWriter, r *http.Request) {
 
 	_, status, err := bd.InsertCommentTweet(register)
 	if err != nil {
-		http.Error(w, "Ocurrio un error al momento de grabar el comentario", http.StatusBadRequest)
+		http.Error(w, "Ocurrio un error al momento de grabar el quote", http.StatusBadRequest)
 		return
 	}
 
