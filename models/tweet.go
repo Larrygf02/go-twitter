@@ -23,6 +23,6 @@ type GetTweet struct {
 	CreatedDate    time.Time          `bson:"date" json:"date,omitempty"`
 	IsComment      bool               `bson:"is_comment" json:"is_comment,omitempty"`
 	TwitterComment string             `bson:"twitter_comment" json:"twitter_comment,omitempty"`
-	IsRetweet      bool               `bson:"is_retweet" json:"is_retweet, omitempty"`
+	IsRetweet      bool               `bson:"is_retweet" json:"is_retweet,omitempty"`
 	TwitterRetweet string             `bson:"twitter_retweet" json:"twitter_retweet,omitempty"`
 }

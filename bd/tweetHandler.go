@@ -12,14 +12,14 @@ import (
 
 // Obtener quienes comentaron el tweet
 
-func GetCommentsTweet(ID string) ([]*models.Tweet, error) {
+func GetCommentsTweet(ID string) ([]*models.GetTweet, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 
 	db := MongoCN.Database("twitter")
 	collection := db.Collection("tweet_beta")
 	condition := bson.M{"twitter_comment": ID}
-	var results []*models.Tweet
+	var results []*models.GetTweet
 
 	cursor, _ := collection.Find(ctx, condition)
 	if err := cursor.All(ctx, &results); err != nil {
