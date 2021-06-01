@@ -26,3 +26,17 @@ type GetTweet struct {
 	IsRetweet      bool               `bson:"is_retweet" json:"is_retweet"`
 	TwitterRetweet string             `bson:"twitter_retweet" json:"twitter_retweet"`
 }
+
+type TweetLike struct {
+	ID          primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
+	UserId      string             `bson:"userid" json:"userid,omitempty"`
+	CreatedDate time.Time          `bson:"date" json:"date,omitempty"`
+	Tweet       string             `bson:"tweet" json:"tweet,omitempty"`
+}
+
+type Retweet struct {
+	ID          primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
+	UserId      string             `bson:"userid" json:"userid,omitempty"`
+	CreatedDate time.Time          `bson:"date" json:"date,omitempty"`
+	Tweet       string             `bson:"tweet" json:"tweet,omitempty"`
+}

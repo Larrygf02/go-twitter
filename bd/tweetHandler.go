@@ -74,3 +74,25 @@ func GetQuoteTweet(ID string) ([]*models.GetTweet, error) {
 	}
 	return results, nil
 }
+
+// Add like to Tweet
+
+func AddLikeTweet(tweet_like models.TweetLike) (bool, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+
+	db := MongoCN.Database("twitter")
+	collection := db.Collection("tweet_like")
+
+	register := bson.M{
+		"userid": tweet_like.UserId,
+		"date":   tweet_like.CreatedDate,
+		"tweet":  tweet_like.Tweet,
+	}
+
+	_, err := collection.InsertOne(ctx, register)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
