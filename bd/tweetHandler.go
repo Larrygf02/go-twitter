@@ -56,3 +56,21 @@ func InsertCommentTweet(tweet models.Tweet) (string, bool, error) {
 	objID, _ := result.InsertedID.(primitive.ObjectID)
 	return objID.String(), true, nil
 }
+
+// Get Quote Twees
+func GetQuoteTweet(ID string) ([]*models.GetTweet, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+
+	db := MongoCN.Database("twitter")
+	collection := db.Collection("tweet_beta")
+	condition := bson.M{"twitter_retweet": ID}
+	var results []*models.GetTweet
+
+	cursor, _ := collection.Find(ctx, condition)
+	if err := cursor.All(ctx, &results); err != nil {
+		fmt.Println(err.Error())
+		return results, err
+	}
+	return results, nil
+}

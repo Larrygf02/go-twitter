@@ -34,6 +34,7 @@ func HandlerRouters() {
 	router.HandleFunc("/tweet/comment", middlew.CheckBD(middlew.ValidateJWT(routers.RegisterCommentTweet))).Methods("POST")
 	router.HandleFunc("/tweet/comments", middlew.CheckBD(middlew.ValidateJWT(routers.GetCommentsTweet))).Methods("GET")
 	router.HandleFunc("/tweet/quotetweet", middlew.CheckBD(middlew.ValidateJWT(routers.RegisterQuoteTweet))).Methods("POST")
+	router.HandleFunc("/tweet/quotetweets", middlew.CheckBD(middlew.ValidateJWT(routers.GetQuotesTweet))).Methods("GET")
 	PORT := os.Getenv("PORT")
 	if PORT == "" {
 		PORT = "8081"
