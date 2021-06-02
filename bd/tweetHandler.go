@@ -17,7 +17,7 @@ func GetCommentsTweet(ID string) ([]*models.GetTweet, error) {
 	defer cancel()
 
 	db := MongoCN.Database("twitter")
-	collection := db.Collection("tweet_beta")
+	collection := db.Collection("tweet")
 	condition := bson.M{"twitter_comment": ID}
 	var results []*models.GetTweet
 
@@ -36,7 +36,7 @@ func InsertCommentTweet(tweet models.Tweet) (string, bool, error) {
 	defer cancel()
 
 	db := MongoCN.Database("twitter")
-	collection := db.Collection("tweet_beta")
+	collection := db.Collection("tweet")
 
 	register := bson.M{
 		"userid":          tweet.UserId,
@@ -63,7 +63,7 @@ func GetQuoteTweet(ID string) ([]*models.GetTweet, error) {
 	defer cancel()
 
 	db := MongoCN.Database("twitter")
-	collection := db.Collection("tweet_beta")
+	collection := db.Collection("tweet")
 	condition := bson.M{"twitter_retweet": ID}
 	var results []*models.GetTweet
 
