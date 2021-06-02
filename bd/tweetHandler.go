@@ -148,3 +148,25 @@ func DeleteLike(ID string, UserID string) error {
 	_, err := collection.DeleteOne(ctx, condition)
 	return err
 }
+
+// Add Retweet
+
+func AddRetweet(retweet models.Retweet) (bool, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+
+	db := MongoCN.Database("twitter")
+	collection := db.Collection("tweet_retweet")
+
+	register := bson.M{
+		"userid": retweet.UserId,
+		"date":   retweet.CreatedDate,
+		"tweet":  retweet.Tweet,
+	}
+
+	_, err := collection.InsertOne(ctx, register)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
