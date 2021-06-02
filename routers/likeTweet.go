@@ -32,3 +32,7 @@ func RegisterLikeTweet(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusCreated)
 }
+
+func GetLikeTweet(w http.ResponseWriter, r *http.Request) {
+
+}
