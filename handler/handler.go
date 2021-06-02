@@ -36,6 +36,8 @@ func HandlerRouters() {
 	router.HandleFunc("/tweet/quotetweet", middlew.CheckBD(middlew.ValidateJWT(routers.RegisterQuoteTweet))).Methods("POST")
 	router.HandleFunc("/tweet/quotetweets", middlew.CheckBD(middlew.ValidateJWT(routers.GetQuotesTweet))).Methods("GET")
 	router.HandleFunc("/tweet/like", middlew.CheckBD(middlew.ValidateJWT(routers.RegisterLikeTweet))).Methods("POST")
+	router.HandleFunc("/tweet/likes", middlew.CheckBD(middlew.ValidateJWT(routers.GetLikeTweet))).Methods("GET")
+	router.HandleFunc("/tweet/dislike", middlew.CheckBD(middlew.ValidateJWT(routers.RegisterLikeTweet))).Methods("DELETE")
 
 	PORT := os.Getenv("PORT")
 	if PORT == "" {

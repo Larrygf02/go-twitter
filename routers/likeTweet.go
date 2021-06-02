@@ -34,5 +34,19 @@ func RegisterLikeTweet(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetLikeTweet(w http.ResponseWriter, r *http.Request) {
+	ID := r.URL.Query().Get("id")
+	if len(ID) < 1 {
+		http.Error(w, "Debe enviar el parametro ID ", http.StatusBadRequest)
+		return
+	}
 
+	response, status := bd.GetLikesTweet(ID)
+	if !status {
+		http.Error(w, "Ocurrio un error al momento de obtener los likes", http.StatusBadRequest)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(response)
 }
