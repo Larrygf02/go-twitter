@@ -39,6 +39,7 @@ func HandlerRouters() {
 	router.HandleFunc("/tweet/likes", middlew.CheckBD(middlew.ValidateJWT(routers.GetLikeTweet))).Methods("GET")
 	router.HandleFunc("/tweet/dislike", middlew.CheckBD(middlew.ValidateJWT(routers.DislikeTweet))).Methods("DELETE")
 	router.HandleFunc("/tweet/retweet", middlew.CheckBD(middlew.ValidateJWT(routers.RegisterRetweet))).Methods("POST")
+	router.HandleFunc("/tweet/retweets", middlew.CheckBD(middlew.ValidateJWT(routers.GetRetweets))).Methods("GET")
 	PORT := os.Getenv("PORT")
 	if PORT == "" {
 		PORT = "8081"
