@@ -50,3 +50,20 @@ func GetRetweets(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(response)
 }
+
+func UnRetweet(w http.ResponseWriter, r *http.Request) {
+	ID := r.URL.Query().Get("id")
+	if len(ID) < 1 {
+		http.Error(w, "Debe enviar el parametro ID ", http.StatusBadRequest)
+		return
+	}
+
+	err := bd.UnRetweet(ID, IdUser)
+	if err != nil {
+		http.Error(w, "Ocurrió un error al momento al eliminar el retweet", http.StatusBadRequest)
+		return
+	}
+
+	w.Header().Set("Content-type", "application/json")
+	w.WriteHeader(http.StatusOK)
+}

@@ -205,3 +205,20 @@ func GetRetweets(ID string) ([]*models.User, bool) {
 	fmt.Println(idUsers)
 	return results, true
 }
+
+// UnRetweet
+func UnRetweet(ID string, UserID string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+
+	db := MongoCN.Database("twitter")
+	collection := db.Collection("tweet_retweet")
+
+	condition := bson.M{
+		"userid": UserID,
+		"tweet":  ID,
+	}
+
+	_, err := collection.DeleteOne(ctx, condition)
+	return err
+}
