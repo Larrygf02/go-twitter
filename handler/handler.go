@@ -31,6 +31,16 @@ func HandlerRouters() {
 	router.HandleFunc("/list-tweets", middlew.CheckBD(middlew.ValidateJWT(routers.ReadTweetsFollowers))).Methods("GET") // leer tweets
 	router.HandleFunc("/following", middlew.CheckBD(middlew.ValidateJWT(routers.GetFollowing))).Methods("GET")
 	router.HandleFunc("/followers", middlew.CheckBD(middlew.ValidateJWT(routers.GetFollowers))).Methods("GET")
+	router.HandleFunc("/tweet/comment", middlew.CheckBD(middlew.ValidateJWT(routers.RegisterCommentTweet))).Methods("POST")
+	router.HandleFunc("/tweet/comments", middlew.CheckBD(middlew.ValidateJWT(routers.GetCommentsTweet))).Methods("GET")
+	router.HandleFunc("/tweet/quotetweet", middlew.CheckBD(middlew.ValidateJWT(routers.RegisterQuoteTweet))).Methods("POST")
+	router.HandleFunc("/tweet/quotetweets", middlew.CheckBD(middlew.ValidateJWT(routers.GetQuotesTweet))).Methods("GET")
+	router.HandleFunc("/tweet/like", middlew.CheckBD(middlew.ValidateJWT(routers.RegisterLikeTweet))).Methods("POST")
+	router.HandleFunc("/tweet/likes", middlew.CheckBD(middlew.ValidateJWT(routers.GetLikeTweet))).Methods("GET")
+	router.HandleFunc("/tweet/dislike", middlew.CheckBD(middlew.ValidateJWT(routers.DislikeTweet))).Methods("DELETE")
+	router.HandleFunc("/tweet/retweet", middlew.CheckBD(middlew.ValidateJWT(routers.RegisterRetweet))).Methods("POST")
+	router.HandleFunc("/tweet/retweets", middlew.CheckBD(middlew.ValidateJWT(routers.GetRetweets))).Methods("GET")
+	router.HandleFunc("/tweet/unretweet", middlew.CheckBD(middlew.ValidateJWT(routers.UnRetweet))).Methods("DELETE")
 	PORT := os.Getenv("PORT")
 	if PORT == "" {
 		PORT = "8081"

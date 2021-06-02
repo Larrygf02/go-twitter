@@ -19,9 +19,13 @@ func RegisterTweet(w http.ResponseWriter, r *http.Request) {
 	}
 
 	register := models.Tweet{
-		UserId:      IdUser,
-		Message:     tweet.Message,
-		CreatedDate: time.Now(),
+		UserId:         IdUser,
+		Message:        tweet.Message,
+		CreatedDate:    time.Now(),
+		IsComment:      false,
+		TwitterComment: "",
+		IsRetweet:      false,
+		TwitterRetweet: "",
 	}
 	_, status, err := bd.InsertTweet(register)
 	if err != nil {
