@@ -17,6 +17,7 @@ func GenerateToken(user models.User) (string, error) {
 		"birth_date": user.BirthDate,
 		"location":   user.Location,
 		"website":    user.Website,
+		"avatar":     user.Avatar,
 		"_id":        user.ID.Hex(),
 		"expire":     time.Now().Add(time.Hour * 24).Unix(),
 	}
