@@ -2,11 +2,13 @@ package bd
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"time"
 
 	"github.com/go-twitter/models"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -42,4 +44,25 @@ func GetTweet(ID string, page int64) ([]*models.GetTweet, bool) {
 		results = append(results, &register)
 	}
 	return results, true
+}
+
+func GetOneTweet(ID string) (models.GetTweet, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+
+	db := MongoCN.Database("twitter")
+	collection := db.Collection("tweet")
+	objectId, _ := primitive.ObjectIDFromHex(ID)
+
+	var result models.GetTweet
+	condition := bson.M{
+		"_id": objectId,
+	}
+
+	err := collection.FindOne(ctx, condition).Decode(&result)
+	if err != nil {
+		fmt.Println("Registro no encontrado " + err.Error())
+		return result, err
+	}
+	return result, nil
 }
