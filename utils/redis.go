@@ -7,11 +7,7 @@ import (
 )
 
 func GetClientRedis() redis.Client {
-	client := redis.NewClient(&redis.Options{
-		Addr:     os.Getenv("REDIS_URL"),
-		Password: "",
-		DB:       0,
-	})
-
+	opt, _ := redis.ParseURL(os.Getenv("REDIS_URL"))
+	client := redis.NewClient(opt)
 	return *client
 }
