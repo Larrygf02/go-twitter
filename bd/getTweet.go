@@ -24,11 +24,11 @@ func GetTweet(ID string, page int64) ([]*models.GetTweet, bool) {
 		"userid": ID,
 	}
 	options := options.Find()
-	options.SetLimit(20)
+	options.SetLimit(8)
 	options.SetSort(bson.D{
 		{Key: "date", Value: -1},
 	})
-	options.SetSkip((page - 1) * 20)
+	options.SetSkip((page - 1) * 8)
 
 	cursor, err := collection.Find(ctx, condition, options)
 	if err != nil {
