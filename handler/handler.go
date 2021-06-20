@@ -19,6 +19,7 @@ func HandlerRouters() {
 	router.HandleFunc("/edit-profile", middlew.CheckBD(middlew.ValidateJWT(routers.EditProfile))).Methods("PUT")
 	router.HandleFunc("/tweet", middlew.CheckBD(middlew.ValidateJWT(routers.RegisterTweet))).Methods("POST")
 	router.HandleFunc("/tweet", middlew.CheckBD(middlew.ValidateJWT(routers.DeleteTweet))).Methods("DELETE")
+	router.HandleFunc("/tweet", middlew.CheckBD(middlew.ValidateJWT(routers.GetTweet))).Methods("GET")
 	router.HandleFunc("/tweets", middlew.CheckBD(middlew.ValidateJWT(routers.GetTweets))).Methods("GET")
 	router.HandleFunc("/upload-avatar", middlew.CheckBD(middlew.ValidateJWT(routers.UploadAvatarS3))).Methods("POST")
 	router.HandleFunc("/avatar", middlew.CheckBD(routers.GetAvatar)).Methods("GET") // no es necesario token
