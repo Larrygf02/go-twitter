@@ -3,46 +3,58 @@ package bd
 import (
 	"context"
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/go-twitter/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func GetTweet(ID string, page int64) ([]*models.GetTweet, bool) {
+func GetTweet(ID string, page int64) ([]models.GetTweet, bool) {
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 
 	db := MongoCN.Database("twitter")
 	collection := db.Collection("tweet")
 
-	var results []*models.GetTweet
-	condition := bson.M{
-		"userid": ID,
-	}
-	options := options.Find()
-	options.SetLimit(8)
-	options.SetSort(bson.D{
-		{Key: "date", Value: -1},
+	var results []models.GetTweet
+	conditions := make([]bson.M, 0)
+	conditions = append(conditions, bson.M{"$match": bson.M{"userid": ID}})
+	conditions = append(conditions, bson.M{
+		"$project": bson.M{
+			"userid": bson.M{
+				"$toObjectId": "$userid",
+			},
+			"message":         1,
+			"date":            1,
+			"is_comment":      1,
+			"is_retweet":      1,
+			"twitter_comment": 1,
+			"twitter_retweet": 1,
+		},
 	})
-	options.SetSkip((page - 1) * 8)
-
-	cursor, err := collection.Find(ctx, condition, options)
+	conditions = append(conditions, bson.M{
+		"$lookup": bson.M{
+			"from":         "usuarios",
+			"localField":   "userid",
+			"foreignField": "_id",
+			"as":           "userid",
+		},
+	})
+	conditions = append(conditions, bson.M{"$unwind": "$userid"})
+	conditions = append(conditions, bson.M{"$sort": bson.M{
+		"date": -1,
+	}})
+	skip := (page - 1) * 8
+	conditions = append(conditions, bson.M{"$skip": skip})
+	conditions = append(conditions, bson.M{"$limit": 8})
+	cursor, _ := collection.Aggregate(ctx, conditions)
+	err := cursor.All(ctx, &results)
 	if err != nil {
-		log.Fatal(err.Error())
+		fmt.Println(err.Error())
 		return results, false
 	}
-	for cursor.Next(context.TODO()) {
-		var register models.GetTweet
-		err := cursor.Decode(&register)
-		if err != nil {
-			return results, false
-		}
-		results = append(results, &register)
-	}
+	fmt.Println(results)
 	return results, true
 }
 

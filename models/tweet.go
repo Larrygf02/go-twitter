@@ -18,13 +18,18 @@ type Tweet struct {
 
 type GetTweet struct {
 	ID             primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
-	UserId         string             `bson:"userid" json:"userid,omitempty"`
 	Message        string             `bson:"message" json:"message,omitempty"`
 	CreatedDate    time.Time          `bson:"date" json:"date,omitempty"`
 	IsComment      bool               `bson:"is_comment" json:"is_comment"`
 	TwitterComment string             `bson:"twitter_comment" json:"twitter_comment"`
 	IsRetweet      bool               `bson:"is_retweet" json:"is_retweet"`
 	TwitterRetweet string             `bson:"twitter_retweet" json:"twitter_retweet"`
+	UserId         struct {
+		ID      primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+		Name    string             `bson:"name" json:"name,omitempty"`
+		Surname string             `bson:"surname" json:"surname,omitempty"`
+		Avatar  string             `bson:"avatar" json:"avatar,omitempty"`
+	}
 }
 
 type TweetLike struct {
