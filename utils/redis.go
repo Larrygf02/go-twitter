@@ -14,7 +14,7 @@ func GetClientRedis() redis.Client {
 	if client == nil {
 		lock.Lock()
 		defer lock.Unlock()
-		var local = true
+		var local = false
 		if local {
 			client = redis.NewClient(&redis.Options{
 				Addr:     "localhost:6379",
