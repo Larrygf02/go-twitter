@@ -18,12 +18,38 @@ func GetCommentsTweet(ID string) ([]*models.GetTweet, error) {
 
 	db := MongoCN.Database("twitter")
 	collection := db.Collection("tweet")
-	condition := bson.M{"twitter_comment": ID}
+	// condition := bson.M{"twitter_comment": ID}
+
+	conditions := make([]bson.M, 0)
+	conditions = append(conditions, bson.M{"$match": bson.M{"twitter_comment": ID}})
+	conditions = append(conditions, bson.M{
+		"$project": bson.M{
+			"userid": bson.M{
+				"$toObjectId": "$userid",
+			},
+			"message":         1,
+			"date":            1,
+			"is_comment":      1,
+			"is_retweet":      1,
+			"twitter_comment": 1,
+			"twitter_retweet": 1,
+		},
+	})
+	conditions = append(conditions, bson.M{
+		"$lookup": bson.M{
+			"from":         "usuarios",
+			"localField":   "userid",
+			"foreignField": "_id",
+			"as":           "userid",
+		},
+	})
+	conditions = append(conditions, bson.M{"$unwind": "$userid"})
 	var results []*models.GetTweet
 
-	cursor, _ := collection.Find(ctx, condition)
-	if err := cursor.All(ctx, &results); err != nil {
-		fmt.Println(err.Error())
+	cursor, _ := collection.Aggregate(ctx, conditions)
+	err := cursor.All(ctx, &results)
+	if err != nil {
+		fmt.Println("Registros no encontrados " + err.Error())
 		return results, err
 	}
 	return results, nil
@@ -64,15 +90,46 @@ func GetQuoteTweet(ID string) ([]*models.GetTweet, error) {
 
 	db := MongoCN.Database("twitter")
 	collection := db.Collection("tweet")
-	condition := bson.M{"twitter_retweet": ID}
+	conditions := make([]bson.M, 0)
+	conditions = append(conditions, bson.M{"$match": bson.M{"twitter_retweet": ID}})
+	conditions = append(conditions, bson.M{
+		"$project": bson.M{
+			"userid": bson.M{
+				"$toObjectId": "$userid",
+			},
+			"message":         1,
+			"date":            1,
+			"is_comment":      1,
+			"is_retweet":      1,
+			"twitter_comment": 1,
+			"twitter_retweet": 1,
+		},
+	})
+	conditions = append(conditions, bson.M{
+		"$lookup": bson.M{
+			"from":         "usuarios",
+			"localField":   "userid",
+			"foreignField": "_id",
+			"as":           "userid",
+		},
+	})
+	conditions = append(conditions, bson.M{"$unwind": "$userid"})
 	var results []*models.GetTweet
 
-	cursor, _ := collection.Find(ctx, condition)
+	cursor, _ := collection.Aggregate(ctx, conditions)
+	err := cursor.All(ctx, &results)
+	if err != nil {
+		fmt.Println("Registros no encontrados " + err.Error())
+		return results, err
+	}
+	return results, nil
+
+	/*cursor, _ := collection.Find(ctx, condition)
 	if err := cursor.All(ctx, &results); err != nil {
 		fmt.Println(err.Error())
 		return results, err
 	}
-	return results, nil
+	return results, nil*/
 }
 
 // Add like to Tweet
