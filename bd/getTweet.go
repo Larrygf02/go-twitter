@@ -66,15 +66,42 @@ func GetOneTweet(ID string) (models.GetTweet, error) {
 	collection := db.Collection("tweet")
 	objectId, _ := primitive.ObjectIDFromHex(ID)
 
-	var result models.GetTweet
-	condition := bson.M{
-		"_id": objectId,
-	}
+	var result []models.GetTweet
 
-	err := collection.FindOne(ctx, condition).Decode(&result)
+	conditions := make([]bson.M, 0)
+	conditions = append(conditions, bson.M{"$match": bson.M{"_id": objectId}})
+	conditions = append(conditions, bson.M{
+		"$project": bson.M{
+			"userid": bson.M{
+				"$toObjectId": "$userid",
+			},
+			"message":         1,
+			"date":            1,
+			"is_comment":      1,
+			"is_retweet":      1,
+			"twitter_comment": 1,
+			"twitter_retweet": 1,
+		},
+	})
+	conditions = append(conditions, bson.M{
+		"$lookup": bson.M{
+			"from":         "usuarios",
+			"localField":   "userid",
+			"foreignField": "_id",
+			"as":           "userid",
+		},
+	})
+	conditions = append(conditions, bson.M{"$unwind": "$userid"})
+	//condition := bson.M{
+	//	"_id": objectId,
+	//}
+
+	//err := collection.FindOne(ctx, conditions).Decode(&result)
+	cursor, _ := collection.Aggregate(ctx, conditions)
+	err := cursor.All(ctx, &result)
 	if err != nil {
 		fmt.Println("Registro no encontrado " + err.Error())
-		return result, err
+		return result[0], err
 	}
-	return result, nil
+	return result[0], nil
 }
