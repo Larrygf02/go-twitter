@@ -3,7 +3,6 @@ package utils
 import (
 	"os"
 	"sync"
-	"fmt"
 	"github.com/go-redis/redis"
 )
 
